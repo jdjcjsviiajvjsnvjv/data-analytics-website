@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="hi-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sales Lab: har chart ek paath</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#101C2E;--panel:#182A44;--ink:#F1ECE2;--mute:#9DB1C7;--a1:#E3A23F;--a2:#6FCDBE;--a3:#EF8B7B;--a4:#B7A2F0;--line:#2A4468;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#EEF2F7;--panel:#FFFFFF;--ink:#14263F;--mute:#4D6480;--a1:#B06A0A;--a2:#12806E;--a3:#C0392B;--a4:#6446C4;--line:#CAD6E4}}
+:root[data-theme="dark"]{--bg:#101C2E;--panel:#182A44;--ink:#F1ECE2}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3,.big{font-family:"Bricolage Grotesque",Georgia,sans-serif;letter-spacing:-.02em}
+.wrap{display:flex;min-height:100vh}
+nav{width:230px;flex:none;padding:22px 14px;border-right:1px solid var(--line);position:sticky;top:0;align-self:flex-start;height:100vh;overflow:auto}
+nav b{font:800 22px "Bricolage Grotesque",sans-serif;display:block;margin:0 8px 14px}
+nav a{display:block;padding:8px 10px;border-radius:8px;color:var(--mute);text-decoration:none;font-size:15px;border-left:3px solid transparent}
+nav a:hover{color:var(--ink)}nav a.on{color:var(--ink);background:var(--panel);border-left-color:var(--a1)}
+main{flex:1;min-width:0;max-width:900px;padding:30px 22px 70px;margin:0 auto}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:0 0 8px;font-weight:800}
+.q{color:var(--a1);font-size:18px;margin:0 0 20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+.card h3{margin:0 0 10px;font-size:17px}
+.cv{position:relative;height:320px}
+dl{margin:22px 0 0;display:grid;grid-template-columns:1fr;gap:14px}
+dt{font:800 15px "Bricolage Grotesque",sans-serif;color:var(--a1);margin-bottom:2px}
+dd{margin:0;max-width:70ch}
+.warn dt{color:var(--a3)}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.kp div{border-left:4px solid var(--c);padding:2px 0 2px 12px}
+.kp small{display:block;color:var(--mute);font-size:13px}.kp .big{font-size:28px;font-weight:800}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left}th{color:var(--mute);font-weight:500}
+.go{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.go a{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--ink);text-decoration:none}
+.go a:hover{border-color:var(--a1)}.go small{color:var(--mute);display:block}
+.pn{display:flex;justify-content:space-between;margin-top:30px;gap:10px}
+.pn a{color:var(--a1);text-decoration:none;font-weight:500}
+:focus-visible{outline:3px solid var(--a1);outline-offset:2px}
+@media(max-width:760px){.wrap{display:block}nav{width:auto;height:auto;position:static;border:0;border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:10px}nav b{display:none}nav a{white-space:nowrap;border-left:0;border-bottom:3px solid transparent}nav a.on{border-bottom-color:var(--a1)}.cv{height:280px}}
+</style>
+</head>
+<body>
+<div class="wrap"><nav id="nav" aria-label="Pages"></nav><main id="main"></main></div>
+<script>
+const D={"gross":63997686.55,"net":41158106.55,"lost":22839580.0,"margin":21.308600626089785,"truep":6139406.550000001,"rating":4.026696329254728,"trend":{"m":["2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09"],"sales":[2180499.9,2682107.8,1693904.7,1736963.1,2555060.7,1614324.7,1313400.2,771127.0,1717214.6,1458281.4,2229174.3,2142177.2,2342370.4,2478149.5,771329.2,1581583.1,3185420.3,2478679.4,2711924.1,1636250.1,1878164.8],"profit":[468124.9,560687.8,368589.7,379038.0,543730.7,346009.7,288635.2,177007.0,359384.7,311696.5,478189.3,451267.2,494615.3,522269.5,178599.2,339518.2,665210.3,517179.3,569739.1,353615.1,397109.8],"target":[5001351.0,4443325.0,4443987.0,4805940.0,4236643.0,4959076.0,4294055.0,4213209.0,4865624.0,4318665.0,4644564.0,4360616.0,4681634.0,4544830.0,4442287.0,4030752.0,4420082.0,4389306.0,4668936.0,3644482.0,4303143.0]},"cat":{"k":["Laptop","Phone","Tablet","Printer","Chair","Monitor","SSD","Desk","RAM","Smartwatch","Webcam","Headphones","Router","Power Bank","Mouse","Keyboard"],"sales":[19226850.0,11709900.0,1623800.0,1645050.0,1368863.1,1283975.0,1238875.0,691782.8,539280.0,418655.3,332242.0,342185.9,329735.0,209674.6,99235.8,98001.9],"profit":[3896700.0,2380500.0,353000.0,348950.0,342113.1,309925.0,291500.0,184407.8,146055.0,119530.4,92932.1,91165.9,89855.1,57114.7,37135.8,29331.9],"mg":[20.3,20.3,21.7,21.2,25.0,24.1,23.5,26.7,27.1,28.6,28.0,26.6,27.3,27.2,37.4,29.9]},"reg":{"North":[9859140.3,24675653.0],"South":[10012725.55,25023717.0],"East":[9490146.6,20066435.0],"West":[11796094.1,23946702.0]},"disc":{"k":["0%","5%","10%","15%","20%"],"mg":[21.2,21.3,21.8,21.2,21.3],"orders":[247,106,123,122,109],"q":[3.4,3.4,3.2,3.2,3.3],"profit":[3745251.0,1372303.5,1222811.1,1377444.6,1052406.4],"r":[4.0,4.1,4.0,3.9,4.1],"true_mg":[21.2,17.1,13.1,7.3,1.6]},"status":{"k":["Cancelled","Completed","Pending","Returned"],"n":[150,528,179,143],"v":[13365613.2,31174427.4,9983679.2,9473966.8]},"badcat":{"Monitor":40.9,"Tablet":40.5,"Laptop":34.2,"Router":34.0,"Phone":32.0,"Power Bank":29.5,"Desk":29.2,"Printer":28.9,"Headphones":27.8,"RAM":27.3,"Mouse":25.5,"Chair":25.5,"Webcam":24.1,"Keyboard":24.0,"SSD":22.7,"Smartwatch":14.6},"chan":{"Online":[22153889.4,4744479.5,367.0,4.0],"Store":[19004217.1,4025737.1,340.0,4.0]},"pay":{"k":["Credit Card","Cash","Debit Card","Net Banking","UPI"],"v":[10376139.9,8964339.3,8263671.4,7357791.0,6196164.8]},"emp":{"k":["Ananya","Kavya","Neha","Vikas","Rohit","Aarav","Priya","Rahul","Aman","Simran","Meera","Arjun"],"sales":[4530482.5,4104770.3,3832897.6,3733359.9,3697375.4,3487427.2,3263821.6,3160841.2,3107891.5,2932503.5,2860267.7,2446468.0],"reg":["West","West","South","South","East","North","North","West","North","East","East","South"],"exp":[5,8,1,6,9,1,7,4,4,10,8,5]},"seg":{"k":["Consumer","Corporate","Home Office"],"sales":[15433991.7,14905820.2,10818294.8],"aov":[64577.4,57551.4,51762.2]},"mem":{"k":["Basic","Gold","Platinum","Silver"],"sales":[8612872.6,11710889.3,12091762.9,8742581.8],"aov":[52839.7,68086.6,58984.2,52350.8],"n":[163,172,205,167]},"age":{"k":["18-25","26-35","36-45","46-55","56+"],"sales":[7491185.5,9520908.4,10019801.3,5550695.5,8575515.8],"aov":[64027.2,61824.1,55665.6,47850.8,61253.7]}};
+const cr=v=>v>=1e7?(v/1e7).toFixed(2)+' cr':v>=1e5?(v/1e5).toFixed(1)+' L':Math.round(v).toLocaleString('en-IN');
+const rs=v=>'₹'+cr(v);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let live=[];
+function base(){Chart.defaults.color=css('--mute');Chart.defaults.borderColor=css('--line');Chart.defaults.font.family='"IBM Plex Sans",sans-serif';Chart.defaults.maintainAspectRatio=false}
+const col=()=>[css('--a1'),css('--a2'),css('--a3'),css('--a4')];
+const yfmt={ticks:{callback:v=>cr(v)}};
+const bar=(l,d,c,o={})=>({type:'bar',data:{labels:l,datasets:[{data:d,backgroundColor:c,borderRadius:4}]},options:{plugins:{legend:{display:false}},...o}});
+const P=[
+{id:'home',t:'Overview',s:'Poori kahani ek nazar mein'},
+{id:'trend',t:'1. Monthly Trend',s:'Sales target se kitni door?',
+ q:'Har mahine ki sales target ke muqable kaisi rahi?',
+ ch:()=>[{h:'Monthly net sales vs target (₹)',c:{type:'line',data:{labels:D.trend.m,datasets:[{label:'Net sales',data:D.trend.sales,borderColor:col()[0],backgroundColor:col()[0]+'33',fill:true,tension:.25,pointRadius:3},{label:'Target',data:D.trend.target,borderColor:col()[1],borderDash:[6,5],pointRadius:0}]},options:{scales:{y:yfmt}}}}],
+ read:'Peeli line asli sales hai, hari dotted line target. Dono ke beech ka faasla hi “shortfall” hai. Line ka upar-neeche hona volatility batata hai.',
+ find:'21 mahine mein ek bhi mahina target tak nahi pahuncha. Average sales ₹19.6 L/mahina rahi jabki target lagbhag ₹44.6 L tha (kareeb 44% attainment). Sabse kamzor mahine Aug 2025 aur Mar 2026 (dono ₹7.7 L), sabse majboot May 2026 (₹31.9 L).',
+ why:'Laptop aur phone jaise bade-ticket orders (₹65,000 tak) kuch hi aate hain. Isliye ek mahine mein 5 bade orders kam hue to poori line gir jaati hai. Ye “lumpy demand” hai.',
+ act:'Bade orders ka pipeline alag track karo aur mahine ki shuruaat mein hi dekho ki kitne bade deals pakke hain. Saath hi targets ko asli history ke hisaab se dobara tay karo.',
+ warn:'Net sales mein Cancelled aur Returned orders shamil nahi hain (Completed + Pending liye gaye hain).'},
+{id:'cat',t:'2. Products',s:'Paisa kahan se aata hai',
+ q:'Kaun se product asal mein kamaai karwate hain, aur kaun se sirf bheed badhate hain?',
+ ch:()=>[{h:'Profit by product (₹)',c:bar(D.cat.k,D.cat.profit,col()[0],{indexAxis:'y',scales:{x:yfmt}})},{h:'Reported profit margin (%)',c:bar(D.cat.k,D.cat.mg,col()[1],{indexAxis:'y'})}],
+ read:'Pehla chart batata hai kitna rupaya bacha, doosra batata hai har 100 rupaye ki sale par kitna bacha. Dono ko saath padho, kyunki bada profit aur bada margin alag cheezein hain.',
+ find:'Laptop aur Phone milkar 75% sales aur 72% profit dete hain, lekin margin sabse kam (20.3%) hai. Mouse (37.4%) aur Keyboard (29.9%) ka margin sabse zyada hai, par unka profit bahut chhota hai.',
+ why:'Mehenge product par seedha kamaai bahut hoti hai magar dukaan unhe kam margin par bechti hai. Sasti accessories par margin acha hai par volume aur daam kam hone se rupaye kam bante hain.',
+ act:'Laptop/Phone ke saath mouse, keyboard jaisi accessories bundle karo. Isse bade order ka average margin upar jaayega bina daam badhaye.',
+ warn:'Ye margin “reported” hai. Discount wale page par dekho ki isme ek anomaly hai, isliye sachcha margin neeche hoga.'},
+{id:'region',t:'3. Regions',s:'Target ke muqable region',
+ q:'Kaun sa region target ke sabse kareeb hai?',
+ ch:()=>{const k=Object.keys(D.reg);return[{h:'Actual vs target (₹)',c:{type:'bar',data:{labels:k,datasets:[{label:'Actual',data:k.map(r=>D.reg[r][0]),backgroundColor:col()[0],borderRadius:4},{label:'Target',data:k.map(r=>D.reg[r][1]),backgroundColor:col()[1]+'88',borderRadius:4}]},options:{scales:{y:yfmt}}}},{h:'Target attainment (%)',c:bar(k,k.map(r=>+(D.reg[r][0]/D.reg[r][1]*100).toFixed(1)),col()[3])}]},
+ read:'Pehle chart mein do dande hain: asli aur target. Doosre chart mein inka ratio hai, yaani target ka kitna hissa poora hua.',
+ find:'West sabse aage hai (₹1.18 cr, 49.3% attainment), East 47.3%, aur North aur South dono 40.0% par. Koi bhi region 50% tak nahi pahuncha.',
+ why:'Sabhi regions ke targets asli sales se lagbhag double hain. Ye region ki galti kam, target-setting ki samasya zyada lagti hai. North aur South ke targets sabse bade bhi hain.',
+ act:'North aur South ka target realistic karo ya wahan ke sales plan par alag se kaam karo. West ki strategy (kaun si cities, kaun se products) baaki regions ko sikhao.',
+ warn:'Sirf Jan 2025 se Sep 2026 tak ke mahine compare kiye gaye hain, jinke liye sales data hai.'},
+{id:'disc',t:'4. Discount',s:'Sabse badi khoj',
+ q:'Kya discount dene se sach mein faayda hota hai?',
+ ch:()=>[{h:'Margin by discount: dataset ka reported vs sachcha (%)',c:{type:'line',data:{labels:D.disc.k,datasets:[{label:'Reported margin',data:D.disc.mg,borderColor:col()[2],borderDash:[6,5],tension:.2},{label:'Sachcha margin (fixed unit cost)',data:D.disc.true_mg,borderColor:col()[0],tension:.2,borderWidth:3}]},options:{scales:{y:{min:0}}}}},{h:'Order mein average quantity',c:bar(D.disc.k,D.disc.q,col()[1],{scales:{y:{min:0}}})}],
+ read:'Neeche x-axis par discount hai. Dotted line wo margin hai jo dataset batata hai, solid line wo jo product ki asli cost se nikalta hai. Dono ka alag hona hi sawaal hai.',
+ find:'Dataset ka margin har discount par lagbhag 21% rehta hai, jo asambhav hai. Product Master ki fixed cost se margin 0% discount par 21.2% hai, par 20% discount par sirf 1.6%. Saath hi order mein quantity 3.4 se 3.3 ho gayi, yaani discount se zyada maal nahi bika.',
+ why:'Sales_Data mein Cost = Cost_Price x Quantity x (1 - Discount). Matlab discount ke saath cost bhi ghatti dikhti hai, jo galat hai: supplier ko poora daam dena padta hai. Isse reported profit ₹87.7 L hai, jabki sachcha ₹61.4 L, yaani 43% zyada dikhaya gaya.',
+ act:'Discount policy dobara dekho: 15-20% wale discounts lagbhag koi profit nahi chhodte. Aur data pipeline mein Cost se discount ka factor hatao.',
+ warn:'Ye nateeja is dataset ke Product_Master ki Cost_Price par tika hai. Asli company mein cost ki definition pehle confirm karo.'},
+{id:'status',t:'5. Order Status',s:'Kitna paisa haath se gaya',
+ q:'Kitne orders poore hue aur kitna revenue cancel ya return mein gaya?',
+ ch:()=>[{h:'Orders by status',c:{type:'doughnut',data:{labels:D.status.k,datasets:[{data:D.status.n,backgroundColor:[col()[2],col()[1],col()[0],col()[3]],borderWidth:0}]},options:{cutout:'58%'}}},{h:'Cancelled + Returned rate by product (%)',c:bar(Object.keys(D.badcat),Object.values(D.badcat),col()[2],{indexAxis:'y'})}],
+ read:'Doughnut mein har rang ek status hai. Neeche wale chart mein lambi patti ka matlab us product ke zyada orders cancel ya return hue.',
+ find:'Sirf 528 orders (49% value) Completed hain. ₹2.28 cr, yaani gross sales ka 35.7%, Cancelled aur Returned mein gaya. Monitor (40.9%) aur Tablet (40.5%) sabse bure hain, Smartwatch sabse achha (14.6%).',
+ why:'Monitor aur tablet jaise delicate ya spec-sensitive product mein “expectation vs reality” ka gap zyada hota hai. Smartwatch jaisi chhoti cheez par pachhtawa kam hota hai.',
+ act:'Monitor aur tablet ke liye better product photos, spec sheet aur delivery check lagao. 179 Pending orders ko jaldi close karo.',
+ warn:'Pending orders baad mein cancel ho sakte hain, isliye net sales thodi aur ghat sakti hai.'},
+{id:'chan',t:'6. Channel & Payment',s:'Online ya Store, kaise payment',
+ q:'Online aur Store mein kaun behtar hai, aur log kaise payment karte hain?',
+ ch:()=>[{h:'Net sales by channel (₹)',c:bar(Object.keys(D.chan),Object.values(D.chan).map(v=>v[0]),[col()[0],col()[1]],{scales:{y:yfmt}})},{h:'Net sales by payment mode (₹)',c:bar(D.pay.k,D.pay.v,col()[3],{scales:{y:yfmt}})}],
+ read:'Pehla chart do channels ki seedhi tulna hai. Doosra chart batata hai ki paisa kis tareeke se aaya.',
+ find:'Online ₹2.22 cr vs Store ₹1.90 cr. Dono ka margin lagbhag barabar (21.4% aur 21.2%). Cancel/return rate Online 27.9% aur Store 30.8%. Payment mein Credit Card (₹1.04 cr) aage, UPI (₹0.62 cr) sabse peeche.',
+ why:'Mehenge orders par log credit card (EMI) pasand karte hain, isliye card ka share bada hai. UPI chhote transactions mein chalta hai, jahan order value kam hoti hai.',
+ act:'Online par zor do, par Store ke return process ko bhi sudharo. Credit-card EMI offers ko promote karo, kyunki wahi bade orders chalata hai.',
+ warn:'Channel ka farak kaafi chhota hai, isliye ise “pakka nateeja” nahi, “rujhan” maano.'},
+{id:'emp',t:'7. Employees',s:'Experience se kya hota hai',
+ q:'Kya zyada experience wale employee zyada bechte hain?',
+ ch:()=>[{h:'Net sales by employee (₹)',c:bar(D.emp.k,D.emp.sales,col()[0],{scales:{y:yfmt}})},{h:'Experience (saal) vs sales: har bindu ek employee',c:{type:'scatter',data:{datasets:[{data:D.emp.k.map((n,i)=>({x:D.emp.exp[i],y:D.emp.sales[i],n})),backgroundColor:col()[1],pointRadius:7}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw.n+': '+rs(c.raw.y)}}},scales:{x:{title:{display:true,text:'Experience (saal)'}},y:yfmt}}}}],
+ read:'Pehla chart ranking hai. Doosra chart check karta hai ki bindu upar-dayen (zyada experience, zyada sales) jaate hain ya bikhre hue hain.',
+ find:'Ananya (West) sabse upar ₹45.3 L, Arjun (South) sabse neeche ₹24.5 L. Experience aur sales ka correlation -0.13 hai, yaani lagbhag koi rishta nahi. 1 saal ke Aarav ne ₹34.9 L becha, jabki 10 saal ke Simran ne ₹29.3 L.',
+ why:'Sales sirf employee par nahi, uske region, customers aur product mix par bhi tikti hai. West ke employees ko behtar market mili.',
+ act:'Employees ki tulna region ke hisaab se karo, seedhe nahi. Top performer ki selling style ko training mein badlo.',
+ warn:'Employee targets ka period dataset mein saaf nahi hai, isliye maine unhe target se compare nahi kiya. 12 log sirf chhota sample hain.'},
+{id:'cust',t:'8. Customers',s:'Kaun kharid raha hai',
+ q:'Kaun se customers sabse zyada aur sabse bade orders dete hain?',
+ ch:()=>[{h:'Average order value by segment (₹)',c:bar(D.seg.k,D.seg.aov,col()[0],{scales:{y:yfmt}})},{h:'Average order value by membership (₹)',c:bar(D.mem.k,D.mem.aov,col()[1],{scales:{y:yfmt}})},{h:'Net sales by age band (₹)',c:bar(D.age.k,D.age.sales,col()[3],{scales:{y:yfmt}})}],
+ read:'AOV (average order value) ka matlab ek order ki ausat keemat. Tino chart alag-alag angle se “kaun” sawaal ka jawab dete hain.',
+ find:'Consumer segment ka AOV sabse bada (₹64.6 k), Home Office ka sabse chhota (₹51.8 k). Gold members ka AOV sabse zyada (₹68.1 k), jabki Platinum ka total sales sabse zyada (₹1.21 cr, 205 orders). 36-45 age band sabse bada (₹1.00 cr), 46-55 sabse chhota (₹55.5 L).',
+ why:'Platinum ke zyada orders hain, Gold ke bade orders. Dono ko alag tareeke se sambhalna chahiye: ek ko frequency, doosre ko value.',
+ act:'Gold members ko premium bundles aur Platinum ko loyalty offers do. 46-55 age band ko alag campaign se target karo, kyunki wahi sabse kamzor hai.',
+ warn:'Customer ki umar aur membership Customer_Master se jodi gayi hai. Kuch customer ka naam missing tha, par ID se sab jud gaye.'}
+];
+function show(){
+ const id=(location.hash||'#home').slice(1),i=Math.max(0,P.findIndex(p=>p.id==id)),p=P[i];
+ live.forEach(c=>c.destroy());live=[];base();
+ document.getElementById('nav').innerHTML='<b>Sales Lab</b>'+P.map(x=>`<a href="#${x.id}" class="${x.id==p.id?'on':''}">${x.t}</a>`).join('');
+ const m=document.getElementById('main');let h='';
+ if(i==0){
+  const k=[['Gross sales',rs(D.gross),'--a1'],['Net sales (Completed + Pending)',rs(D.net),'--a2'],['Cancel + Return mein gaya',rs(D.lost),'--a3'],['Reported margin',D.margin.toFixed(1)+'%','--a1'],['Sachcha margin (fixed cost)',(D.truep/D.net*100).toFixed(1)+'%','--a4'],['Average rating',D.rating.toFixed(2)+' / 5','--a2']];
+  h=`<h1>Electronics Sales: har chart ek paath</h1><p class="q">1,000 orders, 16 products, 4 regions, Jan 2025 se Sep 2026.</p>
+  <div class="card"><div class="kp">${k.map(x=>`<div style="--c:var(${x[2]})"><small>${x[0]}</small><span class="big">${x[1]}</span></div>`).join('')}</div></div>
+  <div class="card"><h3>Pehle data ki safai (professor ka rule: analysis se pehle cleaning)</h3><table><tr><th>Samasya</th><th>Kya kiya</th></tr>
+  <tr><td>2 poore duplicate orders (O00101, O00251)</td><td>Hata diye, 1,002 rows se 1,000 orders bache</td></tr>
+  <tr><td>101 orders mein Rating missing</td><td>Average sirf bhari hui ratings par nikala</td></tr>
+  <tr><td>1 jagah Customer_Name khali</td><td>Customer_ID se pehchaan hui, analysis par asar nahi</td></tr>
+  <tr><td>Cost discount ke saath ghatti dikhti hai</td><td>Sachcha margin Product_Master ki fixed cost se alag nikala</td></tr></table></div>
+  <h3>8 chart pages, har ek ek sawaal ka jawab</h3><div class="go">${P.slice(1).map(x=>`<a href="#${x.id}"><b>${x.t}</b><small>${x.s}</small></a>`).join('')}</div>`;
+ }else{
+  h=`<h1>${p.t.replace(/^\d+\.\s/,'')}</h1><p class="q">Sawaal: ${p.q}</p>`+p.ch().map((c,j)=>`<div class="card"><h3>${c.h}</h3><div class="cv"><canvas id="c${j}" role="img" aria-label="${c.h}"></canvas></div></div>`).join('')+
+  `<dl><div><dt>Chart ko kaise padhein</dt><dd>${p.read}</dd></div><div><dt>Kya mila</dt><dd>${p.find}</dd></div><div><dt>Sambhav kaaran (hypothesis)</dt><dd>${p.why}</dd></div><div><dt>Ab kya karein</dt><dd>${p.act}</dd></div><div class="warn"><dt>Savdhaani</dt><dd>${p.warn}</dd></div></dl>`+
+  `<div class="pn"><a href="#${P[i-1].id}">← ${P[i-1].t}</a>${P[i+1]?`<a href="#${P[i+1].id}">${P[i+1].t} →</a>`:'<span></span>'}</div>`;
+ }
+ m.innerHTML=h;scrollTo(0,0);
+ if(i>0)p.ch().forEach((c,j)=>live.push(new Chart(document.getElementById('c'+j),c.c)));
+}
+addEventListener('hashchange',show);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',show);
+show();
+</script>
+</body>
+</html>
